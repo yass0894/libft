@@ -6,7 +6,7 @@
 /*   By: yibrahim <yibrahim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 10:31:50 by yibrahim          #+#    #+#             */
-/*   Updated: 2024/09/25 10:31:53 by yibrahim         ###   ########.fr       */
+/*   Updated: 2024/09/28 12:52:34 by yibrahim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,27 +15,25 @@
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char	*substr;
-	size_t	i;
-	size_t	s_len;
+	size_t	strlen;
 
+	strlen = ft_strlen(s);
 	if (!s)
 		return (NULL);
-	s_len = 0;
-	while (s[s_len] != '\0')
-		s_len++;
-	if (start >= s_len)
-		return (malloc (1));
-	if (len > s_len - start)
-		len = s_len - start;
-	substr = (char *) malloc(sizeof(char) * (len + 1));
+	if (start > strlen)
+	{
+		substr = malloc(1);
+		if (!substr)
+			return (NULL);
+		substr[0] = '\0';
+		return (substr);
+	}
+	if (len > strlen - start)
+		len = strlen - start;
+	substr = malloc(sizeof(char) * len + 1);
 	if (!substr)
 		return (NULL);
-	i = 0;
-	while (i < len && s[start + i] != '\0')
-	{
-		substr[i] = s[start + i];
-		i++;
-	}
-	substr [i] = '\0';
+	substr[len + 1] = '\0';
+	ft_strlcpy(substr, s + start, len + 1);
 	return (substr);
 }

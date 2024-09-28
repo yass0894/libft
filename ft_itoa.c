@@ -6,52 +6,53 @@
 /*   By: yibrahim <yibrahim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 10:50:13 by yibrahim          #+#    #+#             */
-/*   Updated: 2024/09/26 15:18:45 by yibrahim         ###   ########.fr       */
+/*   Updated: 2024/09/28 12:52:16 by yibrahim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static	int	ft_num_len(int n)
+static int	ft_nlen(int n)
 {
-	int	len;
+	int	nlen;
 
-	len = 0;
+	nlen = 0;
 	if (n == 0)
 		return (1);
 	if (n < 0)
-		len++;
+		nlen++;
 	while (n != 0)
 	{
 		n /= 10;
-		len++;
+		nlen++;
 	}
-	return (len);
+	return (nlen);
 }
 
 char	*ft_itoa(int n)
 {
-	int			len;
-	char		*str;
-	long		num;
+	int		len;
+	char	*str;
+	long	nbr;
 
-	len = ft_num_len(n);
-	num = n;
-	str = (char *)malloc(sizeof(char) * (len + 1));
+	len = ft_nlen(n);
+	nbr = n;
+	str = malloc(sizeof(char) * (len + 1));
 	if (!str)
-		return (NULL);
-	str[len] = '\0';
-	if (num < 0)
+		return (0);
+	if (nbr == 0)
+		str[0] = '0';
+	if (nbr < 0)
 	{
 		str[0] = '-';
-		num = -num;
+		nbr = -nbr;
 	}
 	str[len--] = '\0';
-	while (num > 0)
+	while (nbr > 0)
 	{
-		str[len] = (num % 10) + '0';
+		str[len] = (nbr % 10) + '0';
 		len--;
-		num /= 10;
+		nbr /= 10;
 	}
 	return (str);
 }

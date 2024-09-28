@@ -6,7 +6,7 @@
 /*   By: yibrahim <yibrahim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 10:28:39 by yibrahim          #+#    #+#             */
-/*   Updated: 2024/09/25 12:11:25 by yibrahim         ###   ########.fr       */
+/*   Updated: 2024/09/28 12:55:19 by yibrahim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,18 @@
 char	*ft_strchr(const char *s, int c)
 {
 	int		i;
-	char	ca;
+	char	cc;
 
 	i = 0;
-	ca = (char) c;
+	cc = (char) c;
 	while (s[i])
 	{
-		if (s[i] == ca)
+		if (s[i] == cc)
 			return ((char *) &s[i]);
 		i++;
 	}
-	if (c == '\0')
-		return ((char *)s);
+	if (s[i] == cc)
+		return ((char *) &s[i]);
 	return (NULL);
 }
 /*int main(void)

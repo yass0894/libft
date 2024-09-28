@@ -6,7 +6,7 @@
 /*   By: yibrahim <yibrahim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 10:28:21 by yibrahim          #+#    #+#             */
-/*   Updated: 2024/09/26 10:47:26 by yibrahim         ###   ########.fr       */
+/*   Updated: 2024/09/28 12:54:05 by yibrahim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,68 +14,99 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static int	ft_count_substrings(const char *s, char c)
+static char	**ft_wordcount_allocat(const char *s, char c)
 {
-	int	count;
+	int		count;
+	int		in_word;
+	char	**result;
+
+	count = 0;
+	in_word = 0;
+	while (*s)
+	{
+		if (*s != c && in_word == 0)
+		{
+			in_word = 1;
+			count++;
+		}
+		else if (*s == c)
+			in_word = 0;
+		s++;
+	}
+	result = (char **)malloc((count +1) * sizeof(char *));
+	if (!result)
+		return (NULL);
+	return (result);
+}
+
+static char	*ft_word_dup(const char *s, int start, int end)
+{
+	char	*word;
+	int		i;
+	size_t	len;
+
+	i = 0;
+	len = end - start;
+	word = (char *)malloc((len + 1) * sizeof(char));
+	if (!word)
+		return (NULL);
+	while (start < end)
+		word[i++] = s[start++];
+	word[i] = '\0';
+	return (word);
+}
+
+static void	ft_free(char **result, int words)
+{
 	int	i;
 
 	i = 0;
-	count = 0;
-	if (!s[i])
-		return (0);
+	while (i < words)
+		free(result[i++]);
+	free(result);
+}
+
+static char	ft_fill_result(char **result, const char *s, char c)
+{
+	int		i;
+	int		j;
+	int		start;
+
+	i = 0;
+	j = 0;
 	while (s[i])
 	{
 		while (s[i] == c)
 			i++;
-		if (s[i] != '\0')
+		start = i;
+		while (s[i] && s[i] != c)
+			i++;
+		if (i > start)
 		{
-			count++;
-			while (s[i] && s[i] != c)
-				i++;
+			result[j++] = ft_word_dup(s, start, i);
+			if (!result[j - 1])
+			{
+				ft_free(result, j - 1);
+				return (0);
+			}
 		}
 	}
-	return (count);
-}
-
-static	char	**ft_fill_array(char **split_array, const char *s, char c)
-
-{
-	int	start;
-	int	end;
-	int	index;
-
-	start = 0;
-	end = 0;
-	index = 0;
-	while (s[start])
-	{
-		while (s[start] == c)
-			start++;
-		if (s[start])
-		{
-			end = start;
-			while (s[end] && s[end] != c)
-				end++;
-			split_array[index++] = ft_substr(s, start, end - start);
-			start = end;
-		}
-	}
-	split_array[index] = '\0';
-	return (split_array);
+	result[j] = NULL;
+	return (1);
 }
 
 char	**ft_split(char const *s, char c)
 {
-	char	**split_array;
-	int		word_count;
+	char	**result;
 
 	if (!s)
 		return (NULL);
-	word_count = ft_count_substrings(s, c);
-	split_array = (char **)malloc(sizeof(char *) * (word_count + 1));
-	if (!split_array)
+	result = ft_wordcount_allocat(s, c);
+	if (!result)
 		return (NULL);
-	return (ft_fill_array(split_array, s, c));
+	if (!ft_fill_result(result, s, c))
+		return (NULL);
+	return (result);
 }
 /*int main(void)
 {

@@ -6,38 +6,39 @@
 /*   By: yibrahim <yibrahim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 10:23:44 by yibrahim          #+#    #+#             */
-/*   Updated: 2024/09/25 10:23:52 by yibrahim         ###   ########.fr       */
+/*   Updated: 2024/09/28 12:41:24 by yibrahim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_atoi(const char *nptr)
+#include "libft.h"
 
+int	ft_atoi(const char *str)
 {
-	int	result;
+	int	number;
 	int	sign;
+	int	i;
 
-	result = 0;
+	number = 0;
 	sign = 1;
-	while (*nptr == ' ' || (*nptr >= 9 && *nptr <= 13))
+	i = 0;
+	while (str[i] == ' ' || str[i] == '\f' || str[i] == '\n'
+		|| str[i] == '\r' || str[i] == '\t' || str[i] == '\v')
+		i++;
+	if (str[i] == '+' || str[i] == '-')
 	{
-		nptr++;
+		if (str[i] == '-')
+			sign = -1;
+		i++;
 	}
-	while (*nptr == '+' || *nptr == '-')
+	while (str[i] >= '0' && str[i] <= '9')
 	{
-		if (*nptr == '-')
-		{
-			sign = -sign;
-		}
-		nptr++;
+		number = (str[i] - '0') + (number * 10);
+		i++;
 	}
-	while (*nptr >= '0' && *nptr <= '9')
-	{
-		result = result * 10 + (*nptr - '0');
-		nptr++;
-	}
-	return (sign * result);
+	number *= sign;
+	return (number);
 }
 /*int main(void)
 {
